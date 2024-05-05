@@ -1,4 +1,4 @@
-package com.bezkoder.spring.files.excel.controller;
+package com.bezkoder.spring.files.excel.controller.ExcelController;
 
 import java.util.List;
 
@@ -16,10 +16,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.bezkoder.spring.files.excel.helper.ExcelHelper;
 import com.bezkoder.spring.files.excel.message.ResponseMessage;
-import com.bezkoder.spring.files.excel.model.Tutorial;
+import com.bezkoder.spring.files.excel.model.User;
 import com.bezkoder.spring.files.excel.service.ExcelService;
 
 @CrossOrigin("http://localhost:8081")
@@ -50,16 +49,16 @@ public class ExcelController {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(message));
   }
 
-  @GetMapping("/tutorials")
-  public ResponseEntity<List<Tutorial>> getAllTutorials() {
+  @GetMapping("/Users")
+  public ResponseEntity<List<User>> getAllUsers() {
     try {
-      List<Tutorial> tutorials = fileService.getAllTutorials();
+      List<User> Users = fileService.getAllUsers();
 
-      if (tutorials.isEmpty()) {
+      if (Users.isEmpty()) {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
       }
 
-      return new ResponseEntity<>(tutorials, HttpStatus.OK);
+      return new ResponseEntity<>(Users, HttpStatus.OK);
     } catch (Exception e) {
       return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -67,7 +66,7 @@ public class ExcelController {
 
   @GetMapping("/download")
   public ResponseEntity<Resource> getFile() {
-    String filename = "tutorials.xlsx";
+    String filename = "users.xlsx";
     InputStreamResource file = new InputStreamResource(fileService.load());
 
     return ResponseEntity.ok()

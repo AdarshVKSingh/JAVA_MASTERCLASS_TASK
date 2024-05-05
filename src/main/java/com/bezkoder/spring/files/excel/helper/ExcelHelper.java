@@ -15,12 +15,12 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.bezkoder.spring.files.excel.model.Tutorial;
+import com.bezkoder.spring.files.excel.model.User;
 
 public class ExcelHelper {
   public static String TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-  static String[] HEADERs = { "Id", "Title", "Description", "Published" };
-  static String SHEET = "Tutorials";
+  static String[] HEADERs = { "Id", "username", "password" };
+  static String SHEET = "Users";
 
   public static boolean hasExcelFormat(MultipartFile file) {
 
@@ -31,7 +31,7 @@ public class ExcelHelper {
     return true;
   }
 
-  public static ByteArrayInputStream tutorialsToExcel(List<Tutorial> tutorials) {
+  public static ByteArrayInputStream usersToExcel(List<User> users) {
 
     try (Workbook workbook = new XSSFWorkbook(); ByteArrayOutputStream out = new ByteArrayOutputStream();) {
       Sheet sheet = workbook.createSheet(SHEET);
@@ -45,13 +45,12 @@ public class ExcelHelper {
       }
 
       int rowIdx = 1;
-      for (Tutorial tutorial : tutorials) {
+      for (User user : users) {
         Row row = sheet.createRow(rowIdx++);
 
-        row.createCell(0).setCellValue(tutorial.getId());
-        row.createCell(1).setCellValue(tutorial.getTitle());
-        row.createCell(2).setCellValue(tutorial.getDescription());
-        row.createCell(3).setCellValue(tutorial.isPublished());
+        row.createCell(0).setCellValue(user.getId());
+        row.createCell(1).setCellValue(user.getUsername());
+        row.createCell(2).setCellValue(user.getPassword());
       }
 
       workbook.write(out);
@@ -61,14 +60,14 @@ public class ExcelHelper {
     }
   }
 
-  public static List<Tutorial> excelToTutorials(InputStream is) {
+  public static List<User> excelToUsers(InputStream is) {
     try {
       Workbook workbook = new XSSFWorkbook(is);
 
       Sheet sheet = workbook.getSheet(SHEET);
       Iterator<Row> rows = sheet.iterator();
 
-      List<Tutorial> tutorials = new ArrayList<Tutorial>();
+      List<User> users = new ArrayList<User>();
 
       int rowNumber = 0;
       while (rows.hasNext()) {
@@ -82,7 +81,7 @@ public class ExcelHelper {
 
         Iterator<Cell> cellsInRow = currentRow.iterator();
 
-        Tutorial tutorial = new Tutorial();
+        User user = new User();
 
         int cellIdx = 0;
         while (cellsInRow.hasNext()) {
@@ -90,19 +89,19 @@ public class ExcelHelper {
 
           switch (cellIdx) {
           case 0:
-            tutorial.setId((long) currentCell.getNumericCellValue());
+            user.setId((long) currentCell.getNumericCellValue());
             break;
 
           case 1:
-            tutorial.setTitle(currentCell.getStringCellValue());
+            user.setTitle(currentCell.getStringCellValue());
             break;
 
           case 2:
-            tutorial.setDescription(currentCell.getStringCellValue());
+            user.setDescription(currentCell.getStringCellValue());
             break;
 
           case 3:
-            tutorial.setPublished(currentCell.getBooleanCellValue());
+            user.setPublished(currentCell.getBooleanCellValue());
             break;
 
           default:
@@ -112,12 +111,12 @@ public class ExcelHelper {
           cellIdx++;
         }
 
-        tutorials.add(tutorial);
+        users.add(user);
       }
 
       workbook.close();
 
-      return tutorials;
+      return users;
     } catch (IOException e) {
       throw new RuntimeException("fail to parse Excel file: " + e.getMessage());
     }

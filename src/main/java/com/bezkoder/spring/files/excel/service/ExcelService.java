@@ -1,4 +1,4 @@
-package com.bezkoder.spring.files.excel.service;
+package com.bezkoder.spring.files.excel.service.ExcelService;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -9,31 +9,31 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.bezkoder.spring.files.excel.helper.ExcelHelper;
-import com.bezkoder.spring.files.excel.model.Tutorial;
-import com.bezkoder.spring.files.excel.repository.TutorialRepository;
+import com.bezkoder.spring.files.excel.model.User;
+import com.bezkoder.spring.files.excel.repository.UserRepository;
 
 @Service
 public class ExcelService {
   @Autowired
-  TutorialRepository repository;
+  UserRepository repository;
 
   public void save(MultipartFile file) {
     try {
-      List<Tutorial> tutorials = ExcelHelper.excelToTutorials(file.getInputStream());
-      repository.saveAll(tutorials);
+      List<User> users = ExcelHelper.excelToUsers(file.getInputStream());
+      repository.saveAll(users);
     } catch (IOException e) {
       throw new RuntimeException("fail to store excel data: " + e.getMessage());
     }
   }
 
   public ByteArrayInputStream load() {
-    List<Tutorial> tutorials = repository.findAll();
+    List<User> users = repository.findAll();
 
-    ByteArrayInputStream in = ExcelHelper.tutorialsToExcel(tutorials);
+    ByteArrayInputStream in = ExcelHelper.usersToExcel(users);
     return in;
   }
 
-  public List<Tutorial> getAllTutorials() {
+  public List<User> getAllUsers() {
     return repository.findAll();
   }
 }
