@@ -1,4 +1,4 @@
-package com.bezkoder.spring.files.excel.controller.UserController;
+package com.bezkoder.spring.files.excel.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
