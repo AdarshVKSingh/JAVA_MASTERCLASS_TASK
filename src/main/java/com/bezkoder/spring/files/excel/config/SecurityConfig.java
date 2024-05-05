@@ -1,4 +1,4 @@
-package com.bezkoder.spring.files.excel.config.SecurityConfig;
+package com.bezkoder.spring.files.excel.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
