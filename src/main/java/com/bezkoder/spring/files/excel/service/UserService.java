@@ -1,4 +1,4 @@
-package com.bezkoder.spring.files.excel.service.UserService;
+package com.bezkoder.spring.files.excel.service;
 import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
